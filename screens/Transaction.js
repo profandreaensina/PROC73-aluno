@@ -71,29 +71,19 @@ export default class TransactionScreen extends Component {
 
     if (!transactionType) {
       this.setState({ bookId: "", studentId: "" });
-      // Apenas para usuários do Android
-      // ToastAndroid.show("O livro não existe no banco de dados da biblioteca!", ToastAndroid.SHORT);
-      Alert.alert("O livro não existe no banco de dados da biblioteca!");
+      // 01. adicionar alerta de que o livro não foi encontrado no banco de dados
     } else if (transactionType === "issue") {
-      var isEligible = await this.checkStudentEligibilityForBookIssue(studentId);
-
-      if (isEligible) {
-        var { bookName, studentName } = this.state;
-        this.initiateBookIssue(bookId, studentId, bookName, studentName);
-      }
-      // Apenas para usuários do Android
-      // ToastAndroid.show("Livro entregue ao aluno!", ToastAndroid.SHORT);
-      Alert.alert("Livro entregue ao aluno!");
+        var isEligible = await this.checkStudentEligibilityForBookIssue(studentId);
+        if (isEligible) {
+          var { bookName, studentName } = this.state;
+          this.initiateBookIssue(bookId, studentId, bookName, studentName);
+        }
+        Alert.alert("Livro entregue ao aluno!");
     } else {
-      var isEligible = await this.checkStudentEligibilityForBookReturn(bookId, studentId);
-
-      if (isEligible) {
-        var { bookName, studentName } = this.state;
-        this.initiateBookReturn(bookId, studentId, bookName, studentName);
-      }
-      // For Android users only
-      // ToastAndroid.show("Livro devolvido à biblioteca!", ToastAndroid.SHORT);
-      Alert.alert("Livro devolvido à biblioteca!");
+        var isEligible = await this.checkStudentEligibilityForBookReturn(bookId, studentId);
+        // 02. adicionar if que analisa se o aluno é eligivel para retirar um livro
+      
+        Alert.alert("Livro devolvido à biblioteca!");
     }
   };
 
@@ -136,7 +126,7 @@ export default class TransactionScreen extends Component {
       transactionType = false;
     } else {
       bookRef.docs.map(doc => {
-        transactionType = doc.data().is_book_available ? "issue" : "return";
+        //03. aidiconar operador ternário para analisar se livro esta disponivel para retirada
       });
     }
 
